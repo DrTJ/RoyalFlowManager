@@ -9,9 +9,9 @@ namespace RoyalFlowManager
 {
     public static class FlowManager
     {
-        private static Queue<IFlow> flowsQueue = new Queue<IFlow>();
+        private static List<IFlow> flowsList = new List<IFlow>();
 
-        public static IFlow CurrentFlow => flowsQueue.Count == 0 ? null : flowsQueue.Peek();
+        public static IFlow CurrentFlow => flowsList.LastOrDefault();
 
         public static void StartFlow(IFlow flow, Action<IFlow> flowInitializedAction = null, bool finishCurrentFlow = false)
         {
@@ -19,10 +19,10 @@ namespace RoyalFlowManager
             if(finishCurrentFlow)
             {
                 CurrentFlow?.OnFinished();
-                flowsQueue.Dequeue();
+                flowsList.Remove(CurrentFlow);
             }
 
-            flowsQueue.Enqueue(flow);
+            flowsList.Add(flow);
             flow.OnStarted();
             
             flowInitializedAction?.Invoke(flow);
@@ -31,7 +31,7 @@ namespace RoyalFlowManager
         public static void FinishCurrentFlow()
         {
             CurrentFlow?.OnFinished();
-            flowsQueue.Dequeue();
+            flowsList.Remove(CurrentFlow);
             CurrentFlow?.OnReactivated();
         }
     }
