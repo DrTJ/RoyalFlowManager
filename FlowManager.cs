@@ -1,9 +1,7 @@
-﻿using RoyalFlowManager.Flows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using RoyalFlowManager.Flows;
 
 namespace RoyalFlowManager
 {
@@ -13,7 +11,7 @@ namespace RoyalFlowManager
 
         public static IFlow CurrentFlow => flowsList.LastOrDefault();
 
-        public static void StartFlow(IFlow flow, Action<IFlow> flowInitializedAction = null, bool finishCurrentFlow = false)
+        public static void StartFlow(IFlow flow, Action<IFlow> flowInitializingAction = null, bool finishCurrentFlow = false)
         {
             CurrentFlow?.OnDeactivated();
             if(finishCurrentFlow)
@@ -23,9 +21,11 @@ namespace RoyalFlowManager
             }
 
             flowsList.Add(flow);
+
+			flowInitializingAction?.Invoke(flow);
+
             flow.OnStarted();
-            
-            flowInitializedAction?.Invoke(flow);
+            flow.InitializeFlow();
         }
 
         public static void FinishCurrentFlow()

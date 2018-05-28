@@ -1,9 +1,5 @@
-﻿using RoyalFlowManager.FlowStates;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using RoyalFlowManager.FlowStates;
 using Xamarin.Forms;
 
 namespace RoyalFlowManager.Flows
@@ -47,6 +43,12 @@ namespace RoyalFlowManager.Flows
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Running });
         }
 
+        public void InitializeFlow()
+        {
+            flowRouter.InitializeFlow();
+            OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Initialized });
+        }
+
         public T GetFlowState<T>()
         {
             return FlowState is T ? (T)FlowState : (T)new object();
@@ -82,6 +84,7 @@ namespace RoyalFlowManager.Flows
 
     public enum FlowStatus
     {
+        Initialized,
         Started,
         Deactivated,
         Reactivated, 
