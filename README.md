@@ -1,6 +1,6 @@
 # Royal Flow Manager
 
-[![Build Status](https://img.shields.io/github/drtj/RoyalFlowManager.svg?style=flat-square)](https://github.com/DrTJ/RoyalFlowManager)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg?style=flat-square)](https://github.com/DrTJ/RoyalFlowManager)
 [![NuGet Release](https://img.shields.io/nuget/v/RoyalFlowManager.svg?style=flat-square)](https://www.nuget.org/packages/RoyalFlowManager/)
 
 ## What is Royal Flow Manager?
