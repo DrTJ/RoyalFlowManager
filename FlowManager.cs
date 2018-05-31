@@ -7,9 +7,21 @@ namespace RoyalFlowManager
 {
     public static class FlowManager
     {
-        private static List<IFlow> flowsList = new List<IFlow>();
+        #region Fields
 
+        private static List<IFlow> flowsList = new List<IFlow>();
+  
+		#endregion
+
+        #region Properties
+        
         public static IFlow CurrentFlow => flowsList.LastOrDefault();
+
+        public static List<IFlow> FlowsList => flowsList;
+
+        #endregion
+
+        #region Methods
 
         public static void StartFlow(IFlow flow, Action<IFlow> flowInitializingAction = null, bool finishCurrentFlow = false)
         {
@@ -22,7 +34,7 @@ namespace RoyalFlowManager
 
             flowsList.Add(flow);
 
-			flowInitializingAction?.Invoke(flow);
+            flowInitializingAction?.Invoke(flow);
 
             flow.OnStarted();
             flow.InitializeFlow();
@@ -30,9 +42,14 @@ namespace RoyalFlowManager
 
         public static void FinishCurrentFlow()
         {
+            var finishedFlow = CurrentFlow;
             CurrentFlow?.OnFinished();
             flowsList.Remove(CurrentFlow);
-            CurrentFlow?.OnReactivated();
+
+            CurrentFlow?.OnReactivated(finishedFlow);
         }
+
+		#endregion
+
     }
 }

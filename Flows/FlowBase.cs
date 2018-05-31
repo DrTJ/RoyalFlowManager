@@ -64,9 +64,10 @@ namespace RoyalFlowManager.Flows
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Deactivated });
         }
 
-        public virtual void OnReactivated()
+        public virtual void OnReactivated(IFlow previousFlow)
         {
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Reactivated });
+            flowRouter.OnFlowFinished(previousFlow);
         }
 
         public virtual void OnFinished()

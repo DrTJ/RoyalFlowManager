@@ -1,4 +1,5 @@
-﻿using RoyalFlowManager.FlowStates;
+﻿using System;
+using RoyalFlowManager.FlowStates;
 using Xamarin.Forms;
 
 namespace RoyalFlowManager.Flows
@@ -23,7 +24,7 @@ namespace RoyalFlowManager.Flows
 
         void OnDeactivated();
 
-        void OnReactivated();
+        void OnReactivated(IFlow previousFlow);
 
         void OnFinished();
 
