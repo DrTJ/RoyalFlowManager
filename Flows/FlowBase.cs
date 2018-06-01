@@ -83,6 +83,11 @@ namespace RoyalFlowManager.Flows
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Finished });
         }
 
+        public virtual void OnCanceled()
+        {
+            OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Canceled });
+        }
+
         #endregion
     }
 
@@ -99,6 +104,7 @@ namespace RoyalFlowManager.Flows
         ReactivatedFromCanceledFlow, 
         ReactivatedFromFinishedFlow, 
         Finished,
+        Canceled,
         Running
     }
 
