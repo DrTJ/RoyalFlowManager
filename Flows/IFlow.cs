@@ -28,6 +28,8 @@ namespace RoyalFlowManager.Flows
 
         void OnFinished();
 
+        void OnCanceled();
+
         #endregion
     }
 }

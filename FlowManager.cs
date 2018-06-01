@@ -49,6 +49,14 @@ namespace RoyalFlowManager
             CurrentFlow?.OnReactivated(finishedFlow);
         }
 
+        public static void CancelCurrentFlow()
+        {
+            CurrentFlow?.OnCanceled();
+            flowsList.Remove(CurrentFlow);
+
+            CurrentFlow?.OnReactivated(null);
+        }
+
 		#endregion
 
     }
