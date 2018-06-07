@@ -49,9 +49,14 @@ namespace RoyalFlowManager.Flows
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Initialized });
         }
 
-        public T GetFlowState<T>()
+        public T GetFlowState<T>() where T : class
         {
-            return FlowState is T ? (T)FlowState : (T)new object();
+            if ((FlowState as T) == null)
+            {
+                throw new Exception($"Cannot find {typeof(T).Name} in {GetType().Name}.");
+            }
+
+            return (T)FlowState;
         }
 
         public virtual void OnStarted()

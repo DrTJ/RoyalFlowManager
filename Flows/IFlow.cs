@@ -18,7 +18,7 @@ namespace RoyalFlowManager.Flows
 
         void InitializeFlow();
 
-        T GetFlowState<T>();
+        T GetFlowState<T>() where T : class;
 
         void OnStarted();
 
