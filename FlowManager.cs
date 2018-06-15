@@ -15,7 +15,7 @@ namespace RoyalFlowManager
 
         #region Properties
         
-        public static IFlow CurrentFlow => flowsList.LastOrDefault();
+        public static IFlow CurrentFlow => FlowsList.LastOrDefault();
 
         public static List<IFlow> FlowsList => flowsList;
 
@@ -29,10 +29,10 @@ namespace RoyalFlowManager
             if(finishCurrentFlow)
             {
                 CurrentFlow?.OnFinished();
-                flowsList.Remove(CurrentFlow);
+                FlowsList.Remove(CurrentFlow);
             }
 
-            flowsList.Add(flow);
+            FlowsList.Add(flow);
 
             flowInitializingAction?.Invoke(flow);
 
@@ -40,11 +40,15 @@ namespace RoyalFlowManager
             flow.InitializeFlow();
         }
 
-        public static void FinishCurrentFlow()
+        public static void FinishCurrentFlow(bool keepLastFlow = true)
         {
             var finishedFlow = CurrentFlow;
             CurrentFlow?.OnFinished();
-            flowsList.Remove(CurrentFlow);
+
+            if (!(keepLastFlow && FlowsList.Count == 1))
+            {
+                FlowsList.Remove(CurrentFlow);
+            }
 
             CurrentFlow?.OnReactivated(finishedFlow);
         }
@@ -52,7 +56,7 @@ namespace RoyalFlowManager
         public static void CancelCurrentFlow()
         {
             CurrentFlow?.OnCanceled();
-            flowsList.Remove(CurrentFlow);
+            FlowsList.Remove(CurrentFlow);
 
             CurrentFlow?.OnReactivated(null);
         }
