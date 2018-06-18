@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using RoyalFlowManager.Flows;
+using System.Diagnostics;
 
 namespace RoyalFlowManager
 {
@@ -42,14 +43,16 @@ namespace RoyalFlowManager
 
         public static void FinishCurrentFlow(bool keepLastFlow = true)
         {
-            var finishedFlow = CurrentFlow;
-            CurrentFlow?.OnFinished();
-
-            if (!(keepLastFlow && FlowsList.Count == 1))
+            Debug.WriteLineIf(FlowsList.Count == 1, $"Trying to remove the last flow! [Current Flow: {CurrentFlow.GetType().Name}]");
+            if (keepLastFlow && FlowsList.Count == 1)
             {
-                FlowsList.Remove(CurrentFlow);
+                return;
             }
 
+            var finishedFlow = CurrentFlow;
+            CurrentFlow?.OnFinished();
+            FlowsList.Remove(CurrentFlow);
+            
             CurrentFlow?.OnReactivated(finishedFlow);
         }
 

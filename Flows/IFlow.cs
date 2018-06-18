@@ -20,6 +20,8 @@ namespace RoyalFlowManager.Flows
 
         T GetFlowState<T>() where T : class;
 
+        bool Implements<TQuery>() where TQuery : class;
+
         void OnStarted();
 
         void OnDeactivated();

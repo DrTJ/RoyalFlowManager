@@ -59,6 +59,11 @@ namespace RoyalFlowManager.Flows
             return (T)FlowState;
         }
 
+        public bool Implements<TQuery>() where TQuery : class
+        {
+            return FlowState is TQuery;
+        }
+
         public virtual void OnStarted()
         {
             OnFlowStatusChanged?.Invoke(this, new FlowStatusChangedEventArgs() { Status = FlowStatus.Started });
@@ -99,6 +104,9 @@ namespace RoyalFlowManager.Flows
     public class FlowStatusChangedEventArgs : EventArgs
     {
         public FlowStatus Status { get; set; }
+
+        public static FlowStatusChangedEventArgs ReactivatedFromCanceledFlowEventArgs = new FlowStatusChangedEventArgs() { Status = FlowStatus.ReactivatedFromCanceledFlow };
+        public static FlowStatusChangedEventArgs ReactivatedFromFinishedFlowEventArgs = new FlowStatusChangedEventArgs() { Status = FlowStatus.ReactivatedFromFinishedFlow };
     }
 
     public enum FlowStatus
