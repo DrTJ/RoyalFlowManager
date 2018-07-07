@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoyalFlowManager.FlowStates;
+using System;
 using System.Collections.Generic;
 using Xamarin.Forms;
 
@@ -11,7 +12,7 @@ namespace RoyalFlowManager.Flows
         private static FlowRouter router;
 
         private Dictionary<Type, Action> pageRoutesDictionary = new Dictionary<Type, Action>();
-        private Dictionary<Type, Action> flowRoutesDictionary = new Dictionary<Type, Action>();
+        private Dictionary<Type, Action<IFlowState>> flowRoutesDictionary = new Dictionary<Type, Action<IFlowState>>();
         private Action initializer;
 
         #endregion
@@ -36,6 +37,12 @@ namespace RoyalFlowManager.Flows
         }
 
         public FlowRouter AfterFlow<T>(Action actionToExecute) where T : IFlow
+        {
+            flowRoutesDictionary.Add(typeof(T), flowState => actionToExecute?.Invoke());
+            return this;
+        }
+
+        public FlowRouter AfterFlow<T>(Action<IFlowState> actionToExecute) where T : IFlow
         {
             flowRoutesDictionary.Add(typeof(T), actionToExecute);
             return this;
@@ -87,9 +94,8 @@ namespace RoyalFlowManager.Flows
             if (flow == null || !flowRoutesDictionary.ContainsKey(flow.GetType()))
                 return;
 
-            flowRoutesDictionary[flow.GetType()]?.Invoke();
+            flowRoutesDictionary[flow.GetType()]?.Invoke(flow.FlowState);
         }
-
         #endregion
     }
 }
